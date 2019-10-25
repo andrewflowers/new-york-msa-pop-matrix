@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+*Icon?
+new-york-msa-pop-matrix.Rproj
+acs_2017_5yr_race_age_sex_disability.csv
+acs_2017_5yr_race_age_sex_disability.csv.gz
