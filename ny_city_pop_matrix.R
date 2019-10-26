@@ -1,4 +1,4 @@
-# New York MSA population matrix
+# New York City population matrix
 # Author: Andrew Flowers <andrew.w.flowers@gmail.com>
 
 library(tidyverse)
@@ -12,16 +12,16 @@ options(scipen=999)
 # What is this data and how was it created? 
 # What: IPUMS microdata from American Community Survey (ACS) 2017 5-year (2013-2017)
 # IPUMS homepage for ACS data: https://usa.ipums.org/usa/index.shtml
-# Key variables: MET2013 (metro), SEX, AGE, RACE, and various DIFF* (disability) variables
+# Key variables: CITY, SEX, AGE, RACE, and various DIFF* (disability) variables
 # To recreate start here: https://usa.ipums.org/usa-action/variables/group
 
-# Download the zipped data file  (either MSA or City) here: https://drive.google.com/open?id=1bBgWUBynykr3AkBzcf8a16Jz8ccc3g2D
-# Once unzipped (click on it), you should moved the file "acs_2017_5yr_race_age_sex_disability.csv" to your working directory
+# Download the zipped data file (either MSA or City) here: https://drive.google.com/open?id=1NZrNHa3A2U8arzmtZvALPNZvFsxjLaMO
+# Once unzipped (click on it), you should moved the file "acs_2017_5yr_race_age_sex_disability_city.csv" to your working directory
 
 getwd()
 
-raw_ipums_data <- read_csv("acs_2017_5yr_race_age_sex_disability.csv") %>% 
-  filter(MET2013 == 35620) # Filter for NY MSA: https://usa.ipums.org/usa-action/variables/MET2013#codes_section
+raw_ipums_data <- read_csv("acs_2017_5yr_race_age_sex_disability_city.csv") %>% 
+  filter(CITY == 4610) # Filter for NY City: https://usa.ipums.org/usa-action/variables/CITY#codes_section
 
 clean_ipums_data <- raw_ipums_data %>% 
   mutate(
@@ -63,7 +63,7 @@ clean_ipums_data <- raw_ipums_data %>%
     disability_clean = ifelse(is.na(disability_clean), FALSE, disability_clean)
   )
 
-# Total NY MSA pop est
+# Total NY City pop est
 total_pop_est <- clean_ipums_data %>% summarize(total_pop_est = sum(PERWT, na.rm = T)) %>% .$total_pop_est
 # Note: All population estimates must use PERWT variable -- the Census weights at the person (respondent) level
 
@@ -81,7 +81,7 @@ sex_age_race_matrix_wide <- sex_age_race_matrix_long %>%
   select(age_clean, sex_clean, White, Asian, Mixed_race, Hispanic, Black_hispanic, Black, Native_american) %>% 
   arrange(age_clean, desc(sex_clean))
 
-sex_age_race_matrix_wide %>% write_csv("sex_age_race_matrix_wide.csv")
+sex_age_race_matrix_wide %>% write_csv("sex_age_race_matrix_city_wide.csv")
 
 # Sex by age by race by disability
 sex_age_race_dis_matrix_long <- clean_ipums_data %>% 
@@ -95,10 +95,10 @@ sex_age_race_dis_matrix_wide <- sex_age_race_dis_matrix_long %>%
   select(disability_clean, age_clean, sex_clean, White, Asian, Mixed_race, Hispanic, Black_hispanic, Black, Native_american) %>% 
   arrange(disability_clean, age_clean, desc(sex_clean))
 
-sex_age_race_dis_matrix_wide %>% write_csv("sex_age_race_dis_matrix_wide.csv")
+sex_age_race_dis_matrix_wide %>% write_csv("sex_age_race_dis_city_matrix_wide.csv")
 
 ## Fact checks
-# Other than disability status, all comparison stats here: https://censusreporter.org/profiles/31000US35620-new-york-newark-jersey-city-ny-nj-pa-metro-area/
+# Other than disability status, all comparison stats here: https://censusreporter.org/profiles/16000US3651000-new-york-ny/
 # For disbility status, comparison here: https://www.riemerlawfirm.com/wiki/new-york-disability-statistics
 
 # Total pop
