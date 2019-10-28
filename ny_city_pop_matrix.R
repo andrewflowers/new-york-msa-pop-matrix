@@ -92,7 +92,7 @@ sex_age_race_dis_matrix_long <- clean_ipums_data %>%
 sex_age_race_dis_matrix_wide <- sex_age_race_dis_matrix_long %>% 
   select(-pop_est) %>% 
   spread(key = race_clean, value = share_est) %>% 
-  select(disability_clean, age_clean, sex_clean, White, Asian, Mixed_race, Hispanic, Black_hispanic, Black, Native_american) %>% 
+  select(disability_clean, age_clean, sex_clean, White, Asian, Mixed_race, Hispanic, Black_hispanic, Black, Native_american, Other) %>% 
   arrange(disability_clean, age_clean, desc(sex_clean))
 
 sex_age_race_dis_matrix_wide %>% write_csv("sex_age_race_dis_city_matrix_wide.csv")
